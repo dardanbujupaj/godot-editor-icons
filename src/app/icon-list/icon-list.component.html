@@ -1,0 +1,14 @@
+<div>
+  <input [(ngModel)]="size"/>
+  <p>{{size}}</p>
+</div>
+<ul>
+  <li *ngFor="let icon of icons | async">
+    <app-icon-image [icon]="icon"
+      [size]="size"
+      ></app-icon-image>
+    <span>
+      {{icon.name}}
+    </span>
+  </li>
+</ul>
