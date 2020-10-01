@@ -24,7 +24,7 @@
       <mat-list-item *cdkVirtualFor="let icon of filteredIcons | async" class="icon-list-item">
         <app-icon-image [icon]="icon" [size]="size"></app-icon-image>
 
-        <span>{{icon.name.slice(0, icon.name.length - 4)}}</span>
+        <div style="padding-left: 10px;">{{icon.name.slice(0, icon.name.length - 4)}}</div>
 
         <mat-divider></mat-divider>
       </mat-list-item>
