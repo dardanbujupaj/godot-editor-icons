@@ -1,14 +1,33 @@
-<div>
-  <input [(ngModel)]="size"/>
-  <p>{{size}}</p>
+<div style="height: 100%; display: flex; flex-direction: column;">
+  <mat-toolbar>
+    <mat-form-field>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput [formControl]="searchText" placeholder="Filter icons..."/>
+    </mat-form-field>
+
+    <div class="spacer"></div>
+
+    <button mat-icon-button [matMenuTriggerFor]="options">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #options="matMenu">
+      <mat-slider [ngModel]="size" 
+            (input)="size = $event.value"
+            min="8" max="256">
+      </mat-slider>
+
+    </mat-menu>
+  </mat-toolbar>
+
+  <mat-list style="flex: 1 1 auto; display: flex; flex-direction: column;">
+    <cdk-virtual-scroll-viewport [itemSize]="size" style="flex: 1 1 auto">
+      <mat-list-item *cdkVirtualFor="let icon of filteredIcons | async" class="icon-list-item">
+        <app-icon-image [icon]="icon" [size]="size"></app-icon-image>
+
+        <span>{{icon.name.slice(0, icon.name.length - 4)}}</span>
+
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </cdk-virtual-scroll-viewport>
+  </mat-list>
 </div>
-<ul>
-  <li *ngFor="let icon of icons | async">
-    <app-icon-image [icon]="icon"
-      [size]="size"
-      ></app-icon-image>
-    <span>
-      {{icon.name}}
-    </span>
-  </li>
-</ul>
