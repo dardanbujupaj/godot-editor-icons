@@ -11,9 +11,9 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #options="matMenu">
-      <mat-slider [ngModel]="size" 
-            (input)="size = $event.value"
-            min="8" max="256">
+      <mat-slider [ngModel]="size | async" 
+            (input)="sizeSubject.next($event.value)"
+            min="20" max="300">
       </mat-slider>
 
     </mat-menu>
@@ -22,7 +22,7 @@
   <mat-list style="flex: 1 1 auto; display: flex; flex-direction: column;">
     <cdk-virtual-scroll-viewport [itemSize]="size" style="flex: 1 1 auto">
       <mat-list-item *cdkVirtualFor="let icon of filteredIcons | async" class="icon-list-item">
-        <app-icon-image [icon]="icon" [size]="size"></app-icon-image>
+        <app-icon-image [icon]="icon" [size]="size | async"></app-icon-image>
 
         <div style="padding-left: 10px;">{{icon.name.slice(0, icon.name.length - 4)}}</div>
 

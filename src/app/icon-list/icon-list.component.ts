@@ -1,10 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms'
 
-import {Observable, of} from 'rxjs'
-import {combineLatest, startWith, switchMap, tap} from 'rxjs/operators'
+import {Subject, Observable, of, merge} from 'rxjs'
+import {combineLatest, startWith, switchMap, tap, debounceTime, shareReplay} from 'rxjs/operators'
 
 import {IconMetadata} from '../icon-metadata'
+import {SettingsService} from '../settings.service'
+
+
+const SIZE_KEY = 'iconSize'
 
 @Component({
   selector: 'app-icon-list',
@@ -19,9 +23,25 @@ export class IconListComponent implements OnInit {
 
   searchText = new FormControl('')
 
-  size = 32
+  sizeSubject = new Subject<number>()
+  size: Observable<number>
 
-  constructor() { }
+  constructor(
+    private settingsService: SettingsService,
+  ) {
+    this.size = merge(
+      this.sizeSubject.asObservable(),
+      settingsService.item$(SIZE_KEY, 20),
+    ).pipe(
+      shareReplay(),
+    )
+      
+    this.sizeSubject.pipe(
+      debounceTime(500),
+      tap(value => settingsService.setItem(SIZE_KEY, value)),
+    ).subscribe()
+  }
+
 
   ngOnInit(): void {
     this.filteredIcons = this.icons.pipe(

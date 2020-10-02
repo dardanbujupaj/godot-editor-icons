@@ -1,5 +1,7 @@
 import { Component, OnInit, Input} from '@angular/core';
 
+import {Observable} from 'rxjs'
+
 import {IconMetadata} from '../icon-metadata'
 
 @Component({
@@ -11,7 +13,7 @@ export class IconImageComponent implements OnInit {
 
   @Input() icon: IconMetadata
 
-  @Input() size = 16
+  @Input() size: number = 20
 
   constructor() { }
 
